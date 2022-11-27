@@ -1,6 +1,9 @@
+package bsu.rfe.java.group6.lab2.Kuksa.varA11;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 public class SimpleGUI extends JFrame {
     private JButton button = new JButton("Calculate");
     private JTextField inputX = new JTextField("",1);
