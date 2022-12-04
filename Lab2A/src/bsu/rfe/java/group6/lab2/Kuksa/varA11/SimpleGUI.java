@@ -3,7 +3,6 @@ package bsu.rfe.java.group6.lab2.Kuksa.varA11;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 public class SimpleGUI extends JFrame {
 
     private JButton button = new JButton("Calculate");
@@ -18,8 +17,10 @@ public class SimpleGUI extends JFrame {
     private JRadioButton radio1 = new JRadioButton("Formula №1");
     private JRadioButton radio2 = new JRadioButton("Formula №2");
 
+    eHandler handler = new eHandler();
+
     public SimpleGUI(){
-        super("Simple Example");
+        super("Lab 2A");
         this.setBounds(100, 100, 250, 200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -40,52 +41,45 @@ public class SimpleGUI extends JFrame {
         radio1.setSelected(true);
         container.add(radio2);
 
-        button.addActionListener(new ButtonMCEventListener());
         container.add(buttonMC);
-        button.addActionListener(new ButtonMPlusEventListener());
         container.add(buttonMPlus);
-        button.addActionListener(new ButtonEventListener());
         container.add(button);
+
+        buttonMC.addActionListener(handler);
+        buttonMPlus.addActionListener(handler);
+        button.addActionListener(handler);
     }
 
-    class ButtonMCEventListener implements ActionListener{
-        public void actionPerformed (ActionEvent actionEvent){
-            Formula.sum = 15;
-            JOptionPane.showMessageDialog(null, "M+ is cleared", "Output", JOptionPane.PLAIN_MESSAGE);
-        }
-    }
+    public class eHandler implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == button){
+                double result1, result2;
+                String message = "";
+                message += "x = " + inputX.getText() + "  ";
+                message += "y =  " + inputY.getText() + "  ";
+                message += "z = " + inputZ.getText() + "\n";
+                Formula.numerator1 = Math.pow(Math.log(Double.parseDouble(inputZ.getText())) + Math.sin(Math.PI * Math.pow(Double.parseDouble(inputZ.getText()),2)),1/4);
+                Formula.denominator1 = Math.pow(Math.pow(Double.parseDouble(inputY.getText()),2) + Math.exp(Math.cos(Double.parseDouble(inputX.getText()))) + Math.sin(Double.parseDouble(inputY.getText())),Math.sin(Double.parseDouble(inputX.getText())));
+                Formula.numerator2 = 1 + Math.sqrt(Double.parseDouble(inputZ.getText()) * Double.parseDouble(inputX.getText()));
+                Formula.denominator2 = Math.pow(1 + Math.pow(Double.parseDouble(inputX.getText()),3),Double.parseDouble(inputY.getText()));
+                result1 =  Formula.numerator1 /  Formula.denominator1;
+                result2 =  Formula.numerator2 /  Formula.denominator2;
+                if (radio1.isSelected()){
+                    Formula.result = result1;
+                    message += "f1(x,y,z) = " + result1 + "\n";
+                } else {
+                    message += "f2(x,y,z) = " + result2 + "\n";
 
-    class ButtonMPlusEventListener implements ActionListener{
-        int i = 0;
-        public void actionPerformed (ActionEvent actionEvent){
-            Formula.sum += 12;
-            JOptionPane.showMessageDialog(null, "Number is added to a memory" , "Output", JOptionPane.PLAIN_MESSAGE);
-        }
-    }
-    class ButtonEventListener implements ActionListener{
-        public static double result;
-        public void actionPerformed (ActionEvent e){
-            String message = "";
-            message += "x = " + inputX.getText() + "  ";
-            message += "y =  " + inputY.getText() + "  ";
-            message += "z = " + inputZ.getText() + "\n";
-            if (radio1.isSelected()){
-                double numerator, denominator;
-                numerator = Math.pow(Math.log(Double.parseDouble(inputZ.getText())) + Math.sin(Math.PI * Math.pow(Double.parseDouble(inputZ.getText()),2)),1/4);
-                denominator = Math.pow(Math.pow(Double.parseDouble(inputY.getText()),2) + Math.exp(Math.cos(Double.parseDouble(inputX.getText()))) + Math.sin(Double.parseDouble(inputY.getText())),Math.sin(Double.parseDouble(inputX.getText())));
-                result = numerator / denominator;
-                message += "f1(x,y,z) = " + result + "\n";
-            } else {
-                double numerator, denominator;
-                numerator = 1 + Math.sqrt(Double.parseDouble(inputZ.getText()) * Double.parseDouble(inputX.getText()));
-                denominator = Math.pow(1 + Math.pow(Double.parseDouble(inputX.getText()),3),Double.parseDouble(inputY.getText()));
-                result = numerator / denominator;
-                message += "f2(x,y,z) = " + result + "\n";
+                }
+                message += "M+: " + Formula.sum + "\n";
+                JOptionPane.showMessageDialog(null, message, "Output", JOptionPane.PLAIN_MESSAGE);;
             }
-            message += "M+: " + Formula.sum + "\n";
-            JOptionPane.showMessageDialog(null, message, "Output", JOptionPane.PLAIN_MESSAGE);
-        };
+            if (e.getSource() == buttonMC){
+                Formula.sum = 0;
+            }
+            if (e.getSource() == buttonMPlus){
+                Formula.sum += Formula.result;;
+            }
+        }
     }
-
-
 }
